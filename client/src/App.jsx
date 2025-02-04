@@ -20,11 +20,12 @@ function App(){
 
   function sendMessage(event){
     event.preventDefault();
-    socket.current.emit("newMessage",message)
+    socket.current.emit("newMessage",message);
   }
   
-  function addImage(){
-    
+  function addImage(event){
+    event.preventDefault();
+
   }
 
 
@@ -34,7 +35,7 @@ function App(){
       <div className=" h-screen flex justify-center items-center overflow-hidden">
 
 
-        <form className="border-2 h-150 w-100 bg-rose-200" onSubmit={sendMessage} >
+        <form className="border-2 h-150 w-100 bg-rose-200 rounded-lg" onSubmit={sendMessage} >
 
           <div className="border-2 h-135 p-3 gap-y-2 flex flex-col break-all scrollable overflow-y-auto" >
             {prevMessage.length > 0 ? (
@@ -47,10 +48,9 @@ function App(){
           </div>
 
 
-              <div id="sendMessageBar" className="relative top-[0%] border-2 h-15 items-center flex">
-                <button className="h-10 w-10 border-2 cursor-pointer" type="button" onClick={addImage}>#<img/></button>
+              <div id="sendMessageBar" className="relative top-[0%] border-2 h-15 items-center flex rounded-lg">
                 <div className="absolute top-2">
-                    <textarea className="absolute border-2 rounded-lg left-10 w-76.5 h-10 top-0 pl-2 pt-1" 
+                    <textarea className="absolute border-2 rounded-lg left-3 w-83 h-10 top-0 pl-2 pt-1 resize-none " 
                               placeholder="Send Message..."
                               value={message}
                               onChange={(e) =>setMessage(e.target.value)}/>
