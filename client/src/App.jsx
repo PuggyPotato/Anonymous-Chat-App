@@ -27,16 +27,15 @@ function App(){
   const handleKeyDown = (event) => {
   
     if (event.keyCode === 13 || event.which === 13 && !event.shiftKey) {
-      sendMessage(); // Send the message
+      sendMessage(event); // Send the message
       event.preventDefault();
     }
   };
 
   useEffect(() =>{
-      socket.current = io("http://localhost:3000")
+      socket.current = io("https://anonymous-chat-app-h7mo.onrender.com")
       socket.current.on("newMessage",(newMessage) =>{
         setPrevMessage((prevMessage) =>[...prevMessage,newMessage])
-        console.log(newMessage)
       })
 
       return() =>{
@@ -50,9 +49,25 @@ function App(){
     if(message.trim() == ""){
       return;
     }
+    else if(message.length > 250){
+      alert("Bro stop spamming")
+      return;
+    }
+    else if(isValidWord(message)){
     socket.current.emit("newMessage",message);
     setMessage("")
+    }
+    else{
+      alert("STOP!")
+    }
   }
+
+  function isValidWord(str) {
+    // Matches any word with Unicode letters, including accented characters
+    const regex = /^[A-Za-zÀ-ÿ]+$/;
+    return regex.test(str);
+  }
+  
   
   function changeMessage(event){
     if(event.key == "Enter"){
@@ -75,13 +90,14 @@ function App(){
 
         <form className="border-2 h-150 w-100 bg-black rounded-lg" onSubmit={sendMessage} >
 
-          <div className="border-2 h-135 p-3 gap-y-2 flex flex-col break-all scrollable overflow-y-auto message-container"  >
-            {prevMessage.length > 0 ? (
+          <div className="border-2 h-135 p-3 gap-y-2 flex flex-col break-words scrollable overflow-y-auto message-container"  >
+                      
+                        {prevMessage.length > 0 ? (
               prevMessage.map((item,key) =>{
                 return <Message Messages={item} key={key}></Message>
               } )
             ):(
-              <p>No Messages.</p>
+              <p>No Messages.Dont Spam Please T_T</p>
             )}
             <div ref={messagesEndRef} />
           </div>
@@ -89,12 +105,12 @@ function App(){
 
               <div id="sendMessageBar" className="relative top-[0%] border-2 h-15 items-center flex rounded-lg">
                 <div className="absolute top-2">
-                    <input className="absolute border-2 rounded-lg left-3 w-83 h-10 top-0 pl-2 pt-0 resize-none " 
+                    <input className="absolute border-2 rounded-lg left-2 lg:w-84 w-80  h-10 top-0 pl-2 pt-0 resize-none " 
                               placeholder="Send Message..."
                               value={message}
                               onChange={changeMessage} onKeyDown={handleKeyDown} />
                 </div>
-                <button className="absolute border-2 rounded-full w-10 h-10 right-1 cursor-pointer" type="submit"><img src="/send.png" className="w-5 h-5 ml-2.5 color-white"></img></button>
+                <button className="absolute border-2 rounded-full w-10 h-10 right-1 cursor-pointer" type="submit"><img src="./send.png" className="w-5 h-5 ml-2.5 color-white"></img></button>
             </div>
         </form>
       </div>
