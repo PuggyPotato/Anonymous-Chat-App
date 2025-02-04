@@ -7,7 +7,7 @@ const cors = require("cors")
 
 const server = http.createServer(app);
 const io  = new Server(server, {cors:{
-    origin:"https://puggypotato.github.io/Anonymous-Chat-App/"
+    origin:"https://puggypotato.github.io/"
 }})
 
 
