@@ -16,7 +16,7 @@ io.on("connection", (socket) =>{
     console.log("A user connected!")
     socket.on("newMessage", (message) =>{
         console.log(message)
-        socket.emit("newMessage",message)
+        io.emit("newMessage",message) //Emit to everybody
     })
 })
 
